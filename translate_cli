@@ -1,0 +1,72 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'yaml'
+
+puts 'USAGE: translate_cli LANG ACTION<r,w>' unless ARGV.size == 2
+
+def all_jsons
+  Dir.glob("#{resources_path}/#{lang}/**/*.json")
+end
+
+def resources_path
+  "#{ENV['GOPATH']}/src/github.com/cloudfoundry/cli/cf/i18n/resources"
+end
+
+def json_from(file)
+    content = File.read(file)
+    JSON.parse(content)
+end
+
+def write_json(file, json)
+  File.open("#{file}", "w") do |f|
+    f.write JSON.pretty_generate(json)
+  end
+end
+
+def lang
+  ARGV[0]
+end
+
+def action
+  ARGV[1]
+end
+
+def filename
+  "all_#{lang}"
+end
+
+def json_translated
+  @json_translated ||= json_from(filename)
+end
+
+all = {}
+if action == 'r'
+  all_jsons.each do |p|
+    cmd = p.split('/')[-2]
+    all[cmd]  = {}
+    json_from(p).each do |t|
+      all[cmd][t['id']] = t['translation']
+    end
+  end
+
+  write_json(filename, all)
+  puts "#{filename} generated with translations for #{lang}"
+elsif action == 'w'
+  all_jsons.each do |p|
+    count_translations = 0
+    cmd = p.split('/')[-2]
+    json_original = json_from(p)
+    json_original.each do |t|
+      if t['translation'] != json_translated[cmd][t['id']]
+        t['translation'] = json_translated[cmd][t['id']]
+        count_translations += 1
+      end
+    end
+
+    if json_from(p) != json_original
+      write_json(p, json_original)
+      puts "#{count_translations} translations were applied in #{p}"
+    end
+  end
+end
