@@ -11,7 +11,7 @@ Reading all translations and generation the big file:
 
 ```bash
   $ ./translate_cli es r
-  $ all_es generated with translations for es
+  $ all_es.json generated with translations for es
 ```
 
 You can modify this new file and do some translations:
