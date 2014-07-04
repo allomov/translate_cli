@@ -3,7 +3,7 @@ Translate_cli
 
 This tool helps when doing translations for the cloudfoundry cli.
 
-It basically brings all the translations into one big file so you only need to edit one file instead of many.
+It basically brings all the translations into one big file so that you only need to edit one file instead of many.
 
 ## Usage
 
