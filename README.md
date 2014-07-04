@@ -17,7 +17,7 @@ Reading all translations and generation the big file:
 You can modify this new file and do some translations:
 
 ```
-  $ vim all_es
+  $ vim all_es.json
 ```
 
 Now its time to write those translations in the cli:

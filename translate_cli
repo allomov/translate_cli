@@ -33,7 +33,7 @@ def action
 end
 
 def filename
-  "all_#{lang}"
+  "all_#{lang}.json"
 end
 
 def json_translated
