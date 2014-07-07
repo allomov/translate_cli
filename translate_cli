@@ -33,7 +33,7 @@ def action
 end
 
 def filename
-  "all_#{lang}.json"
+  "resources/all_#{lang}.json"
 end
 
 def json_translated
@@ -68,5 +68,6 @@ elsif action == 'w'
       write_json(p, json_original)
       puts "#{count_translations} translations were applied in #{p}"
     end
+    # missing trnaslations
   end
 end
