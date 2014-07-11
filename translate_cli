@@ -53,6 +53,8 @@ if action == 'r'
   write_json(filename, all)
   puts "#{filename} generated with translations for #{lang}"
 elsif action == 'w'
+  count_total_translations = 0
+  count_missing = 0
   all_jsons.each do |p|
     count_translations = 0
     cmd = p.split('/')[-2]
@@ -61,13 +63,17 @@ elsif action == 'w'
       if t['translation'] != json_translated[cmd][t['id']]
         t['translation'] = json_translated[cmd][t['id']]
         count_translations += 1
+      else
+        count_missing += 1
       end
     end
 
     if json_from(p) != json_original
       write_json(p, json_original)
-      puts "#{count_translations} translations were applied in #{p}"
+      puts "#{count_translations} translations were applied on #{p}"
+      count_total_translations += count_translations
     end
     # missing trnaslations
   end
+  puts "\n#{count_total_translations} translations were applied, missing: #{count_missing}"
 end
